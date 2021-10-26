@@ -1,4 +1,4 @@
-package program;
+package com.cruizk;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,39 +9,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import program.repository.StudentRepository;
+import com.cruizk.repository.StudentRepository;
 
 public class MySQLAccess {
 
-  public StudentRepository StudentRepo = null;
-
-  private Connection _connection = null;
+  public Connection Connection = null;
   private Statement _statement = null;
 
   public MySQLAccess() throws Exception {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      _connection = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
+      Connection = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
       String data = ReadSQLFile("tables.sql");
       String[] statements = data.split(";");
-      _statement = _connection.createStatement();
+      _statement = Connection.createStatement();
       for (String sql : statements) {
         _statement.executeUpdate(sql); 
       }
-
-      InitalizeRepos();
     } catch (Exception e) {
       System.out.println("Could not create database connection");
-      e.printStackTrace();
-      throw e;
-    }
-  }
-
-  private void InitalizeRepos() throws Exception {
-    try {
-      StudentRepo = new StudentRepository(_connection);
-    } catch (Exception e) {
-      System.out.println("Could not initalize Repos");
       e.printStackTrace();
       throw e;
     }

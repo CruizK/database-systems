@@ -1,4 +1,4 @@
-package program.repository;
+package com.cruizk.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import program.models.Student;
+import com.cruizk.models.Student;
 
 public class StudentRepository {
   
@@ -59,7 +59,7 @@ public class StudentRepository {
       _updateById.setString(1, column);
       _updateById.setString(2, value);
       _updateById.setInt(3, sid);
-      _updateById.executeQuery();
+      _updateById.executeUpdate();
     } catch(Exception e) {
       System.out.println("An error occurred.");
       e.printStackTrace();

@@ -1,4 +1,4 @@
-package program.models;
+package com.cruizk.models;
 
 import java.sql.ResultSet;
 

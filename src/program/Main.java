@@ -1,5 +1,9 @@
 package program;
 
+import java.util.List;
+import program.models.Student;
+import static spark.Spark.*;
+
 public class Main {
 
   public static void main(String[] args) {
@@ -7,9 +11,10 @@ public class Main {
 
     try {
       MySQLAccess mysql = new MySQLAccess();
-      mysql.ConnectDatabase();
     } catch (Exception e) {
       System.out.println(e.toString());
     }
+
+    port(8080);
   }
 }

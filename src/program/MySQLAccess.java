@@ -9,32 +9,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class MySQLAccess {
-  private Connection connect = null;
-  private Statement statement = null;
+import program.repository.StudentRepository;
 
-  public void ConnectDatabase() throws Exception {
+public class MySQLAccess {
+
+  public StudentRepository StudentRepo = null;
+
+  private Connection _connection = null;
+  private Statement _statement = null;
+
+  public MySQLAccess() throws Exception {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      connect = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
+      _connection = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
       String data = ReadSQLFile("tables.sql");
       String[] statements = data.split(";");
-      statement = connect.createStatement();
+      _statement = _connection.createStatement();
       for (String sql : statements) {
-        statement.executeUpdate(sql); 
+        _statement.executeUpdate(sql); 
       }
+
+      InitalizeRepos();
     } catch (Exception e) {
+      System.out.println("Could not create database connection");
+      e.printStackTrace();
       throw e;
     }
   }
 
-  public PreparedStatement GetStatement(String sql) throws Exception {
+  private void InitalizeRepos() throws Exception {
     try {
-      return connect.prepareStatement(sql);
-    } catch (SQLException e) {
-      System.out.println("An error occurred.");
+      StudentRepo = new StudentRepository(_connection);
+    } catch (Exception e) {
+      System.out.println("Could not initalize Repos");
       e.printStackTrace();
-      return null;
+      throw e;
     }
   }
 

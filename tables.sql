@@ -45,3 +45,4 @@ CREATE TABLE IF NOT EXISTS staff (
   deptid INT NOT NULL,
   FOREIGN KEY (deptid) REFERENCES department(did)
 );
+

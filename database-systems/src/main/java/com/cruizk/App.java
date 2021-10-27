@@ -1,14 +1,9 @@
 package com.cruizk;
 
 import com.cruizk.api.StudentApi;
-import com.google.gson.Gson;
 
 import spark.Spark;
 
-/**
- * Hello world!
- *
- */
 public class App {
   public static void main(String[] args) {
     System.out.println("Hello World!");

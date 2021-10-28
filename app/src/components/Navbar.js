@@ -1,21 +1,53 @@
 import { Box } from "@mui/system";
-import { Tabs, Tab } from "@mui/material";
-import { useState } from "react";
+import { Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person'
+import GroupIcon from '@mui/icons-material/Group'
+import BookIcon from '@mui/icons-material/Book'
+import { useHistory } from "react-router";
 
 function Navbar({ role }) {
-  const [ value, setValue ] = useState(0);
+  const history = useHistory();
+  const drawerWidth = '200px';
+
+  const fontProps = {
+    fontSize: 15,
+    fontWeight: 'medium',
+  };
+
+  const onItemClick = (page) => {
+    history.push(page);
+  }
 
   return (
-    <Box>
-      <Tabs value={value} onChange={e => setValue(e.target.value)}>
-        <Tab label="Students" id="tab-panel-0"/>
-        <Tab label="Courses" id="tab-panel-1"/>
-        <Tab label="Enrolled" id="tab-panel-2"/>
-        <Tab label="Faculty" id="tab-panel-3"/>
-        <Tab label="Staff" id="tab-panel-4"/>
-        <Tab label="Departments" id="tab-panel-5"/>
-      </Tabs>
-    </Box>
+    <Drawer anchor="left" variant="persistent" open={true} sx={{
+      width: drawerWidth,
+      flexShrink: 0,
+      '& .MuiDrawer-paper': {
+        width: drawerWidth,
+        boxSizing: 'border-box',
+      },
+    }}>
+      <Typography align="center" variant="h5" color="primary" sx={{ mb: '10px' }}>Uni System</Typography>
+      <Divider />
+      <List>
+        <ListItemButton onClick={() => onItemClick('/students')}>
+          <ListItemIcon><PersonIcon /></ListItemIcon>
+          <ListItemText primary="Students" primaryTypographyProps={fontProps} />
+        </ListItemButton>
+        <ListItemButton onClick={() => onItemClick('/faculty')}>
+          <ListItemIcon><GroupIcon /></ListItemIcon>
+          <ListItemText primary="Faculty" primaryTypographyProps={fontProps} />
+        </ListItemButton>
+        <ListItemButton onClick={() => onItemClick('/staff')}>
+          <ListItemIcon><GroupIcon /></ListItemIcon>
+          <ListItemText primary="Staff" primaryTypographyProps={fontProps} />
+        </ListItemButton>
+        <ListItemButton onClick={() => onItemClick('/courses')}>
+          <ListItemIcon><BookIcon /></ListItemIcon>
+          <ListItemText primary="Courses" primaryTypographyProps={fontProps} />
+        </ListItemButton>
+      </List>
+    </Drawer>
   )
 }
 

@@ -19,10 +19,8 @@ function MainView() {
 
   return (
     <div>
-      <Navbar />
-    <Container maxWidth="sm">
-      
-    </Container>
+      <Container maxWidth="sm">  
+      </Container>
     </div>
   )
 }

@@ -15,14 +15,15 @@ function Home() {
     setRole(e.target.value);
   }
 
-  const handleClick = (e) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     // Check if valid
     roleContext.setRole(role);
     history.push(`/main`);
   }
 
   return (
-    <Container maxWidth="sm" sx={{ mt: '50px' }}>
+    <Container component="form" onSubmit={handleSubmit} maxWidth="sm" sx={{ mt: '50px' }}>
       <Paper sx={{ py: '50px' }}>
         <Typography variant="h2" align="center">Log In</Typography>
         <Box display="flex" alignItems="center" justifyContent="center" sx={{ py: '25px' }}>
@@ -36,7 +37,7 @@ function Home() {
           <TextField label="User ID" value={id} onChange={e => setId(e.target.value)}/>
         </Box>
         <Box display="flex" justifyContent="center">
-          <Button onClick={handleClick} variant="contained" size="large" sx={{ width: '30%' }}>Submit</Button>
+          <Button type="submit" variant="contained" size="large" sx={{ width: '30%' }}>Submit</Button>
         </Box>
       </Paper>
     </Container>

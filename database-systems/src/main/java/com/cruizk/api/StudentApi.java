@@ -3,7 +3,7 @@ package com.cruizk.api;
 import java.sql.Connection;
 import java.util.List;
 
-import com.cruizk.dto.UpdateDto;
+import com.cruizk.dto.CreateStudentDto;
 import com.cruizk.models.Student;
 import com.cruizk.repository.StudentRepository;
 import com.google.gson.Gson;
@@ -21,12 +21,13 @@ public class StudentApi {
 
     Spark.path("/students", () -> {
       Spark.before("/*", (req, res) -> res.type("application/json"));
+      Spark.post("/", (req, res) -> {
+        CreateStudentDto dto = _gson.fromJson(req.body(), CreateStudentDto.class);
+        System.out.println(dto.ID);
+        return Create(dto);
+      }, _gson::toJson);
       Spark.get("/", (req, res) -> {
         return GetAll();
-      }, _gson::toJson);
-      Spark.get("/:sid", (req, res) -> {
-        int sid = Integer.parseInt(req.params(":sid"));
-        return GetById(sid);
       }, _gson::toJson);
       Spark.delete("/:sid", (req, res) -> {
         int sid = Integer.parseInt(req.params(":sid"));
@@ -34,7 +35,7 @@ public class StudentApi {
       }, _gson::toJson);
       Spark.patch("/:sid", (req, res) -> {
         int sid = Integer.parseInt(req.params(":sid"));
-        UpdateDto dto = _gson.fromJson(req.body(), UpdateDto.class);
+        Student dto = _gson.fromJson(req.body(), Student.class);
         return UpdateById(sid, dto);
       }, _gson::toJson);
     });
@@ -44,14 +45,17 @@ public class StudentApi {
     try {
       return _studentRepo.GetAll();
     } catch (Exception e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  private Student GetById(int sid) {
+  private String Create(CreateStudentDto dto) {
     try {
-      return _studentRepo.GetById(sid);
-    } catch (Exception e) {
+      _studentRepo.Create(dto);
+      return "Created";
+    } catch(Exception e) {
+      e.printStackTrace();
       return null;
     }
   }
@@ -61,15 +65,17 @@ public class StudentApi {
       _studentRepo.DeleteById(sid);
       return "Deleted";
     } catch (Exception e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  private String UpdateById(int sid, UpdateDto dto) {
+  private String UpdateById(int sid, Student student) {
     try {
-      _studentRepo.UpdateById(sid, dto.Column, dto.Value);
+      _studentRepo.UpdateById(sid, student);
       return "Updated";
     } catch (Exception e) {
+      e.printStackTrace();
       return null;
     }
   }

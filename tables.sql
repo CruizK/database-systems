@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS course (
   meets_at VARCHAR(255) NOT NULL,
   room VARCHAR(255) NOT NULL,
   fid INT NOT NULL,
-  capacity INT NOT NULL
+  capacity INT NOT NULL,
+  FOREIGN KEY (fid) REFERENCES faculty(fid)
 );
 
 CREATE TABLE IF NOT EXISTS enrolled (

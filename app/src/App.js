@@ -8,6 +8,8 @@ import Students from './routes/Students';
 import Staff from './routes/Staff';
 import Faculty from './routes/Faculty';
 import Courses from './routes/Courses';
+import Department from './routes/Department';
+import Enrollment from './routes/Enrollment';
 
 function App() {
   return (
@@ -28,9 +30,11 @@ function DefaultContainer() {
       <Navbar />
       <Route path="/main" component={MainView} />
       <Route path="/students" component={Students} />
+      <Route path="/departments" component={Department} />
       <Route path="/staff" component={Staff} />
       <Route path="/faculty" component={Faculty} />
       <Route path="/courses" component={Courses} />
+      <Route path="/enrollment" component={Enrollment} />
     </div>
   )
 }

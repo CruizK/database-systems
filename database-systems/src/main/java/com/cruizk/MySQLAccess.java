@@ -4,12 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import com.cruizk.repository.StudentRepository;
 
 public class MySQLAccess {
 
@@ -20,12 +17,9 @@ public class MySQLAccess {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
-      String data = ReadSQLFile("tables.sql");
-      String[] statements = data.split(";");
       _statement = Connection.createStatement();
-      for (String sql : statements) {
-        _statement.executeUpdate(sql); 
-      }
+      RunSQLFile("tables.sql");
+      //RunSQLFile("data.sql");
     } catch (Exception e) {
       System.out.println("Could not create database connection");
       e.printStackTrace();
@@ -33,7 +27,7 @@ public class MySQLAccess {
     }
   }
 
-  private String ReadSQLFile(String filepath) throws Exception {
+  private void RunSQLFile(String filepath) throws Exception {
     try {
       File myObj = new File(filepath);
       Scanner myReader = new Scanner(myObj);
@@ -43,11 +37,13 @@ public class MySQLAccess {
       }
       myReader.close();
 
-      return data;
+      String[] statements = data.split(";");
+      for (String sql : statements) {
+        _statement.executeUpdate(sql);
+      }
     } catch (FileNotFoundException e) {
       System.out.println("An error occurred.");
       e.printStackTrace();
-      return "";
     }
   }
 }

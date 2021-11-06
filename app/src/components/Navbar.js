@@ -34,6 +34,14 @@ function Navbar({ role }) {
           <ListItemIcon><PersonIcon /></ListItemIcon>
           <ListItemText primary="Students" primaryTypographyProps={fontProps} />
         </ListItemButton>
+        <ListItemButton onClick={() => onItemClick('/departments')}>
+          <ListItemIcon><PersonIcon /></ListItemIcon>
+          <ListItemText primary="Departments" primaryTypographyProps={fontProps} />
+        </ListItemButton>
+        <ListItemButton onClick={() => onItemClick('/enrollment')}>
+          <ListItemIcon><GroupIcon /></ListItemIcon>
+          <ListItemText primary="Enrollment" primaryTypographyProps={fontProps} />
+        </ListItemButton>
         <ListItemButton onClick={() => onItemClick('/faculty')}>
           <ListItemIcon><GroupIcon /></ListItemIcon>
           <ListItemText primary="Faculty" primaryTypographyProps={fontProps} />

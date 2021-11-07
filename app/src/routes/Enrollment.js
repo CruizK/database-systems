@@ -98,7 +98,7 @@ function Enrollment() {
     setSelectedEnrolled(selected);
     setOpen(true);
   }
-  console.log(selectedEnrolled);
+
   return (
     <Container maxWidth="md" sx={{ mt: 3, ml: '250px' }}>
       <Typography variant="h2">Enrollment</Typography>
@@ -123,7 +123,6 @@ function Enrollment() {
           pagination
           columns={columns}
           onSelectionModelChange={(newSelection) => {
-            console.log(newSelection);
             setSelection(newSelection);
           }}
           selectionModel={selection}

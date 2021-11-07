@@ -19,7 +19,6 @@ public class MySQLAccess {
       Connection = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
       _statement = Connection.createStatement();
       RunSQLFile("tables.sql");
-      //RunSQLFile("data.sql");
     } catch (Exception e) {
       System.out.println("Could not create database connection");
       e.printStackTrace();

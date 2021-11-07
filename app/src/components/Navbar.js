@@ -4,9 +4,12 @@ import PersonIcon from '@mui/icons-material/Person'
 import GroupIcon from '@mui/icons-material/Group'
 import BookIcon from '@mui/icons-material/Book'
 import { useHistory } from "react-router";
+import { useContext } from "react";
+import UserContext from "../userContext";
 
-function Navbar({ role }) {
+function Navbar() {
   const history = useHistory();
+  const { user } = useContext(UserContext)
   const drawerWidth = '200px';
 
   const fontProps = {
@@ -17,6 +20,8 @@ function Navbar({ role }) {
   const onItemClick = (page) => {
     history.push(page);
   }
+
+  const isAdmin = user.role == 'Staff' || user.role == 'Faculty';
 
   return (
     <Drawer anchor="left" variant="persistent" open={true} sx={{
@@ -29,6 +34,7 @@ function Navbar({ role }) {
     }}>
       <Typography align="center" variant="h5" color="primary" sx={{ mb: '10px' }}>Uni System</Typography>
       <Divider />
+      {isAdmin ?
       <List>
         <ListItemButton onClick={() => onItemClick('/students')}>
           <ListItemIcon><PersonIcon /></ListItemIcon>
@@ -55,6 +61,13 @@ function Navbar({ role }) {
           <ListItemText primary="Courses" primaryTypographyProps={fontProps} />
         </ListItemButton>
       </List>
+      : <List>
+      <ListItemButton onClick={() => onItemClick('/studentview')}>
+        <ListItemIcon><PersonIcon /></ListItemIcon>
+        <ListItemText primary="Home" primaryTypographyProps={fontProps} />
+      </ListItemButton>
+    </List>
+      }
     </Drawer>
   )
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 
 const UserContext = React.createContext({
-  role: '',
-  setRole: (role) => {}
+  user: null,
+  setUser: (user) => {}
 });
 
 export default UserContext;

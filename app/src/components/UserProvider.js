@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import UserContext from '../userContext';
 
 function UserProvider({ children }) {
-  const [role, setRole] = useState('');
+  const [user, setUser] = useState(null);
 
   return (
-    <UserContext.Provider value={{ role, setRole }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   )

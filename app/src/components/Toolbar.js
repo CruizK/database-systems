@@ -4,7 +4,7 @@ import { Box, Button, IconButton, TextField } from "@mui/material";
 import { useState } from "react";
 
 
-function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick }) {
+function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick, readonly }) {
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -38,11 +38,13 @@ function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick }
             )
           }} />
       </Box>
+      {!readonly && 
       <Box display="flex">
         <Button variant="contained" sx={{ mr: 2 }} onClick={onCreateClick}>Add</Button>
         <Button variant="contained" color="info" sx={{ mr: 2 }} onClick={onUpdateClick}>Update</Button>
         <Button variant="contained" color="error" sx={{ mr: 2 }} onClick={onDeleteClick}>Delete</Button>
       </Box>
+      }
     </Box>
   )
 }

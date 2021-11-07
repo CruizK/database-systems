@@ -1,7 +1,6 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Home from "./routes/Home";
-import MainView from './routes/MainView';
 import UserProvider from './components/UserProvider';
 import Navbar from './components/Navbar';
 import Students from './routes/Students';
@@ -10,6 +9,8 @@ import Faculty from './routes/Faculty';
 import Courses from './routes/Courses';
 import Department from './routes/Department';
 import Enrollment from './routes/Enrollment';
+import UserContext from './userContext';
+import StudentView from './routes/StudentView';
 
 function App() {
   return (
@@ -25,18 +26,36 @@ function App() {
 }
 
 function DefaultContainer() {
+  const { user } = useContext(UserContext);
+
+  if(user == null) return <Redirect to="/" />
+
   return (
     <div>
       <Navbar />
-      <Route path="/main" component={MainView} />
-      <Route path="/students" component={Students} />
-      <Route path="/departments" component={Department} />
-      <Route path="/staff" component={Staff} />
-      <Route path="/faculty" component={Faculty} />
-      <Route path="/courses" component={Courses} />
-      <Route path="/enrollment" component={Enrollment} />
+      <ProtectedRoute path="/students" Component={Students} />
+      <ProtectedRoute path="/departments" Component={Department} />
+      <ProtectedRoute path="/staff" Component={Staff} />
+      <ProtectedRoute path="/faculty" Component={Faculty} />
+      <ProtectedRoute path="/courses" Component={Courses} />
+      <ProtectedRoute path="/enrollment" Component={Enrollment} />
+      <Route path="/studentview" component={StudentView} />
     </div>
   )
+}
+
+function ProtectedRoute({ Component, path }) {
+  const { user } = useContext(UserContext);
+
+
+  console.log(user.role);
+  return <Route path={path} render={() => {
+    if(user.role != 'Faculty' && user.role != 'Staff') {
+      return <Redirect to="/" />
+    }
+
+    return <Component />
+  }} />
 }
 
 export default App;

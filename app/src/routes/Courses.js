@@ -6,6 +6,7 @@ import { GetAllFaculty } from "../api/facultyApi";
 import CourseForm from "../components/CourseForm";
 import CreateModal from "../components/CreateModal";
 import Toolbar from '../components/Toolbar';
+import Search from "../utils/searchFunc";
 
 function Courses() {
 
@@ -50,8 +51,8 @@ function Courses() {
     work();
   }, [])
 
-  const onSearchSubmit = (searchValue) => {
-    console.log("Search submitted: " + searchValue)
+  const onSearchSubmit = (value) => {
+    setRows(Search(value, course.map(x => ({ id: x.ID, ...x }))))
   }
 
   const handleSubmit = async (course, isUpdate) => {

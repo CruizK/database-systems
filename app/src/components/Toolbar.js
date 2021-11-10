@@ -1,10 +1,15 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, Button, IconButton, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../userContext";
 
 
-function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick, readonly }) {
+function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick, readonly, children }) {
+
+  const { user } = useContext(UserContext);
+
+  if(user.role == 'Faculty') readonly = true;
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -13,6 +18,11 @@ function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick, 
       e.preventDefault();
       onSearchSubmit(searchValue);
     }
+  }
+
+  const handleClear = () => {
+    setSearchValue('');
+    onSearchSubmit('');
   }
 
   return (
@@ -31,15 +41,17 @@ function Toolbar({ onSearchSubmit, onUpdateClick, onCreateClick, onDeleteClick, 
                 title="clear"
                 size="small"
                 style={{ visibility: searchValue ? 'visible' : 'hidden' }}
-                onClick={() => setSearchValue('') && onSearchSubmit('')}
+                onClick={handleClear}
               >
                 <ClearIcon fontSize="small" />
               </IconButton>
             )
           }} />
       </Box>
+      {children && <Box display="flex">{children}</Box>}
       {!readonly && 
       <Box display="flex">
+        
         <Button variant="contained" sx={{ mr: 2 }} onClick={onCreateClick}>Add</Button>
         <Button variant="contained" color="info" sx={{ mr: 2 }} onClick={onUpdateClick}>Update</Button>
         <Button variant="contained" color="error" sx={{ mr: 2 }} onClick={onDeleteClick}>Delete</Button>

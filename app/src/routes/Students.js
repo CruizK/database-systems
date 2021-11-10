@@ -5,6 +5,7 @@ import { CreateStudent, DeleteStudent, GetAllStudents, UpdateStudent } from "../
 import CreateModal from "../components/CreateModal";
 import StudentForm from "../components/StudentForm";
 import Toolbar from '../components/Toolbar'
+import Search from "../utils/searchFunc";
 
 const columns = [
   { field: "ID", headerName: "ID", minWidth: 50 },
@@ -36,8 +37,8 @@ function Students() {
     work();
   }, [])
 
-  const onSearchSubmit = (searchValue) => {
-    console.log("Search submitted: " + searchValue)
+  const onSearchSubmit = (value) => {
+    setRows(Search(value, students.map(x => ({id: x.ID, ...x}))))
   }
 
   const handleSubmit = async (student, isUpdate) => {

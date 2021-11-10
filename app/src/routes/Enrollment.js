@@ -7,10 +7,12 @@ import { GetAllStudents } from "../api/studentApi";
 import CreateModal from "../components/CreateModal";
 import Toolbar from '../components/Toolbar';
 import EnrollmentForm from "../components/EnrollmentForm";
+import Search from "../utils/searchFunc";
 
 function Enrollment() {
 
   const [rows, setRows] = useState([]);
+  const [allRows, setAllRows] = useState([]);
   const [enrolled, setEnrolled] = useState([]);
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
@@ -19,24 +21,8 @@ function Enrollment() {
   const [selection, setSelection] = useState([]);
 
   const columns = [
-    { 
-      field: "CourseID", 
-      headerName: "Course", 
-      minWidth: 50,
-      valueFormatter: (params) => {
-        const name = courses.filter(x => x.ID === params.value)[0].Name;
-        return name
-      } 
-    },
-    {
-      field: "StudentID",
-      headerName: "Student",
-      flex: 1,
-      valueFormatter: (params) => {
-        const name = students.filter(x => x.ID === params.value)[0].Name;
-        return name
-      } 
-    },
+    { field: "CourseName", headerName: "Course", minWidth: 50},
+    { field: "StudentName", headerName: "Student", flex: 1},
     { field: "Exam1", headerName: "Exam1", flex: 1 },
     { field: "Exam2", headerName: "Exam2", flex: 1 },
     { field: "Final", headerName: "Final", flex: 1 },
@@ -51,7 +37,7 @@ function Enrollment() {
         setEnrolled(res.data);
         setCourses(deps.data);
         setStudents(deps2.data);
-        setRows(res.data.map(x => ({id: `${x.CourseID}-${x.StudentID}`, ...x })));
+        resetRows(res.data, deps.data, deps2.data);
       } catch(e) {
         console.error(e);
       }  
@@ -60,29 +46,46 @@ function Enrollment() {
     work();
   }, [])
 
-  const onSearchSubmit = (searchValue) => {
-    console.log("Search submitted: " + searchValue)
+  useEffect(() => {
+    setRows(allRows);
+  }, [allRows])
+
+  const resetRows = (enrolled, courses, students) => {
+    setAllRows(enrolled.map(x => 
+      (
+        {
+          id: `${x.CourseID}-${x.StudentID}`, 
+          StudentName: students.filter(y => y.ID === x.StudentID)[0].Name,
+          CourseName:  courses.filter(y => y.ID === x.CourseID)[0].Name,
+          ...x 
+      })));
+  }
+
+  const onSearchSubmit = (value) => {
+    setRows(Search(value, allRows, ['StudentName', 'CourseName']))
   }
 
   const handleSubmit = async (enrolled, isUpdate) => {
     if(isUpdate) {
-      await UpdateEnrolled(enrolled.ID, enrolled);
+      await UpdateEnrolled(enrolled.StudentID, enrolled.CourseID, enrolled);
     }
     else {
       await CreateEnrolled(enrolled);
     }
 
     const res = await GetAllEnrolled()
-    setRows(res.data.map(x => ({id: `${x.CourseID}-${x.StudentID}`, ...x })));
+    resetRows(res.data, courses, students);
     setEnrolled(res.data);
     setOpen(false);
   }
 
   const handleDelete = async () => {
-    await DeleteEnrolled(selection[0]);
+    const courseID = selection[0].split('-')[0];
+    const studentID = selection[0].split('-')[1];
+    await DeleteEnrolled(courseID, studentID);
     const res = await GetAllEnrolled()
     setSelection([]);
-    setRows(res.data.map(x => ({id: `${x.CourseID}-${x.StudentID}`, ...x })));
+    resetRows(res.data, courses, students);
     setEnrolled(res.data);
   }
 

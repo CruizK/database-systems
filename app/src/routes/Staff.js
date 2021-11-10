@@ -6,6 +6,7 @@ import { GetAllDepartment } from '../api/departmentApi'
 import StaffForm from "../components/StaffForm";
 import CreateModal from "../components/CreateModal";
 import Toolbar from '../components/Toolbar';
+import Search from "../utils/searchFunc";
 
 function Staff() {
 
@@ -46,8 +47,8 @@ function Staff() {
     work();
   }, [])
 
-  const onSearchSubmit = (searchValue) => {
-    console.log("Search submitted: " + searchValue)
+  const onSearchSubmit = (value) => {
+    setRows(Search(value, staff.map(x => ({ id: x.ID, ...x }))))
   }
 
   const handleSubmit = async (staff, isUpdate) => {

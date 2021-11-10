@@ -5,6 +5,7 @@ import { CreateDepartment, DeleteDepartment, GetAllDepartment, UpdateDepartment 
 import DepartmentForm from "../components/DepartmentForm";
 import CreateModal from "../components/CreateModal";
 import Toolbar from '../components/Toolbar';
+import Search from "../utils/searchFunc";
 
 const columns = [
   { field: "ID", headerName: "ID", minWidth: 50 },
@@ -34,8 +35,8 @@ function Department() {
     work();
   }, [])
 
-  const onSearchSubmit = (searchValue) => {
-    console.log("Search submitted: " + searchValue)
+  const onSearchSubmit = (value) => {
+    setRows(Search(value, departments.map(x => ({id: x.ID, ...x}))))
   }
 
   const handleSubmit = async (department, isUpdate) => {

@@ -6,6 +6,7 @@ import { CreateFaculty, DeleteFaculty, GetAllFaculty, UpdateFaculty } from "../a
 import CreateModal from "../components/CreateModal";
 import FacultyForm from "../components/FacultyForm";
 import Toolbar from '../components/Toolbar';
+import Search from "../utils/searchFunc";
 
 function Staff() {
 
@@ -19,9 +20,9 @@ function Staff() {
   const columns = [
     { field: "ID", headerName: "ID", minWidth: 50 },
     { field: "Name", headerName: "Name", flex: 1 },
-    { 
-      field: "DeptID", 
-      headerName: "Department", 
+    {
+      field: "DeptID",
+      headerName: "Department",
       flex: 1,
       valueFormatter: (params) => {
         const name = departments.filter(x => x.ID === params.value)[0].Name;
@@ -37,21 +38,21 @@ function Staff() {
         const deps = await GetAllDepartment();
         setFaculty(res.data);
         setDepartments(deps.data);
-        setRows(res.data.map(x => ({id: x.ID, ...x })));
-      } catch(e) {
+        setRows(res.data.map(x => ({ id: x.ID, ...x })));
+      } catch (e) {
         console.error(e);
-      }  
+      }
     }
 
     work();
   }, [])
 
-  const onSearchSubmit = (searchValue) => {
-    console.log("Search submitted: " + searchValue)
+  const onSearchSubmit = (value) => {
+    setRows(Search(value, faculty.map(x => ({ id: x.ID, ...x }))))
   }
 
   const handleSubmit = async (staff, isUpdate) => {
-    if(isUpdate) {
+    if (isUpdate) {
       await UpdateFaculty(staff.ID, staff);
     }
     else {
@@ -59,7 +60,7 @@ function Staff() {
     }
 
     const res = await GetAllFaculty()
-    setRows(res.data.map(x => ({id: x.ID, ...x })));
+    setRows(res.data.map(x => ({ id: x.ID, ...x })));
     setFaculty(res.data);
     setOpen(false);
   }
@@ -68,7 +69,7 @@ function Staff() {
     await DeleteFaculty(selection[0]);
     const res = await GetAllFaculty()
     setSelection([]);
-    setRows(res.data.map(x => ({id: x.ID, ...x })));
+    setRows(res.data.map(x => ({ id: x.ID, ...x })));
     setFaculty(res.data);
   }
 
@@ -89,18 +90,18 @@ function Staff() {
     <Container maxWidth="md" sx={{ mt: 3, ml: '250px' }}>
       <Typography variant="h2">Faculty</Typography>
       <CreateModal open={isOpen} onClose={() => setOpen(false)} handleCancel={() => setOpen(false)} title={selectedFaculty ? "Update Faculty" : "Create Faculty"}>
-        <FacultyForm 
-          onSubmit={handleSubmit} 
-          handleCancel={() => setOpen(false)} 
-          faculty={faculty} 
-          departments={departments} 
+        <FacultyForm
+          onSubmit={handleSubmit}
+          handleCancel={() => setOpen(false)}
+          faculty={faculty}
+          departments={departments}
           selected={selectedFaculty}
         />
       </CreateModal>
-      <Toolbar 
-        onSearchSubmit={onSearchSubmit} 
-        onCreateClick={handleCreateClicked} 
-        onDeleteClick={handleDelete} 
+      <Toolbar
+        onSearchSubmit={onSearchSubmit}
+        onCreateClick={handleCreateClicked}
+        onDeleteClick={handleDelete}
         onUpdateClick={handleUpdateClick}
       />
       <Box sx={{ height: 650, width: '100%' }}>

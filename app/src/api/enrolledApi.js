@@ -12,7 +12,7 @@ export function GetCourseEnrollment(cid) {
   return axios.get(`/enrolled/${cid}`);
 }
 
-export function DeleteEnrolled(sid, cid) {
+export function DeleteEnrolled(cid, sid) {
   return axios.delete(`/enrolled/${sid}/${cid}`);
 }
 

@@ -18,12 +18,19 @@ public class MySQLAccess {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection = DriverManager.getConnection("jdbc:mysql://localhost/university", "root", "password");
       _statement = Connection.createStatement();
-      RunSQLFile("tables.sql");
-      //RunSQLFile("data.sql");
     } catch (Exception e) {
       System.out.println("Could not create database connection");
       e.printStackTrace();
       throw e;
+    }
+
+    try {
+      // Data & Table Files
+      RunSQLFile("tables.sql");
+      RunSQLFile("data.sql");
+    } catch(Exception e) {
+      System.out.println("Could not create database connection");
+      e.printStackTrace();
     }
   }
 

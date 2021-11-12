@@ -10,9 +10,14 @@ import com.cruizk.api.StudentApi;
 import spark.Filter;
 import spark.Spark;
 
-public class App {
+public class Main {
   public static void main(String[] args) {
     System.out.println("Hello World!");
+
+    Spark.staticFiles.location("public");
+    
+    System.out.println(System.getProperty("user.dir"));
+
     MySQLAccess mysql = null;
     StudentApi studentApi = null;
     StaffApi staffApi = null;

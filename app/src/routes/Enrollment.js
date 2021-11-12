@@ -56,7 +56,7 @@ function Enrollment() {
         {
           id: `${x.CourseID}-${x.StudentID}`, 
           StudentName: students.filter(y => y.ID === x.StudentID)[0].Name,
-          CourseName:  courses.filter(y => y.ID === x.CourseID)[0].Name,
+          CourseName:  courses.filter(y => y.ID === x.CourseID)[0].ID,
           ...x 
       })));
   }

@@ -1,8 +1,0 @@
-{
-  "java.project.referencedLibraries": [
-    "lib/**/*.jar",
-    "libs/mysql-connector-java-8.0.27.jar",
-    "libs/spark-core-2.9.3.jar"
-  ],
-  "java.configuration.updateBuildConfiguration": "automatic"
-}
